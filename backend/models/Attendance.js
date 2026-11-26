@@ -21,7 +21,10 @@ const attendanceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-attendanceSchema.index({ student: 1, session: 1 }, { unique: true, sparse: true });
+attendanceSchema.index(
+  { student: 1, session: 1 },
+  { unique: true, partialFilterExpression: { session: { $exists: true, $type: 'objectId' } } }
+);
 attendanceSchema.index({ student: 1, subject: 1, date: 1 });
 
 export default mongoose.model('Attendance', attendanceSchema);
